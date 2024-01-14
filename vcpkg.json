@@ -1,0 +1,15 @@
+{
+    "name": "firestarter",
+    "version-string": "0.1.0",
+    "description": "Light all the campfires in Skyrim.",
+    "homepage": "https://github.com/ceejbot/firestarter",
+    "license": "Parity-7.0.0",
+    "dependencies": [
+        "fmt",
+        "spdlog",
+        "rapidcsv",
+        "directxtk",
+        "rsm-binary-io",
+        "boost-stl-interfaces"
+    ]
+}
