@@ -65,7 +65,8 @@ EXTERN_C [[maybe_unused]] __declspec(dllexport) bool SKSEAPI SKSEPlugin_Load(con
 
 	rlog::info("Game version {}", a_skse->RuntimeVersion().string());
 	Init(a_skse);
-	cosave::initializeCosaves();
+	// not yet
+	// cosave::initializeCosaves();
 
 	SKSE::AllocTrampoline(14 * 3);
 

@@ -106,9 +106,11 @@ sources:
 install:
 	#!/usr/bin/env bash
 	echo "copying to live mod for testing..."
-	mkdir -p "{{TESTMOD}}"/SKSE/plugins
-	echo "{{TESTMOD}}"
-	cp -p build/Release/"{{DLL_BASENAME}}".{dll,pdb} "{{TESTMOD}}"/SKSE/plugins/
+	outdir="{{TESTMOD}}"/SKSE/plugins
+	mkdir -p "$outdir"
+	rsync -a installer/core/ "$outdir"
+	cp -p build/Release/"{{DLL_BASENAME}}".{dll,pdb} "$outdir"
+
 
 [windows]
 @sources:

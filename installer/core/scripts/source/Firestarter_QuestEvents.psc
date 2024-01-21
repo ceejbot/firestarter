@@ -6,4 +6,4 @@ event onInit()
 	; idk
 endEvent
 
-// RegisterForSingleUpdateGameTime
+; RegisterForSingleUpdateGameTime
