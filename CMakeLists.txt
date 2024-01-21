@@ -58,7 +58,7 @@ set(RUST_SOURCE_FILES
 ${CMAKE_SOURCE_DIR}/src/lib.rs
 ${CMAKE_SOURCE_DIR}/src/bridge/mod.rs)
 set(RUST_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/${NAME}/src/lib.rs.cc)
-set(RUST_LIB ${CARGO_TARGET_DIR}/release/${CMAKE_STATIC_LIBRARY_PREFIX}skse_rust_template${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(RUST_LIB ${CARGO_TARGET_DIR}/release/${CMAKE_STATIC_LIBRARY_PREFIX}firestarter${CMAKE_STATIC_LIBRARY_SUFFIX})
 
 # Add a custom command that builds the rust crate and generates C++ bridge code
 add_custom_command(

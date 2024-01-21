@@ -12,5 +12,7 @@ namespace util
 	std::vector<uint8_t> chars_to_vec(const char* input);
 	std::string nameAsUtf8(const RE::TESForm* form);
 
+	RE::TESForm* formSpecToFormItem(const std::string& spec);
+
 	void registerForTimeUpdateAt(const std::string& formspec, float wait);
 }

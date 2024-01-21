@@ -80,7 +80,7 @@ impl FireState {
     // get configured duration for this state, e.g., fire burns for 8 in-game hours
     // 1.0 f32 is 1 game hour
     pub fn duration(&self) -> f32 {
-        match (&self) {
+        match &self {
             FireState::Cold => 0.0,
             FireState::UnlitEmpty => 0.0,
             FireState::UnlitFueled => 0.0,
