@@ -31,9 +31,15 @@ impl Firestarter {
     }
 
     /// Take control of the passed-in fire.
-    pub fn take_control(&mut self) {
+    pub fn take_control(&mut self, form: &TESForm) {
         // create fire struct from args
         // add to fires hashmap
+
+        let formid = form.GetFormID();
+        let campfire = ManagedFire::new();
+        self.fires.insert(formid, campfire);
+        log::info!("taking control of campfire; obj ref {:x}", formid);
+
         todo!()
     }
 
