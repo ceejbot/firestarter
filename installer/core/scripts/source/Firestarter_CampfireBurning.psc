@@ -12,7 +12,12 @@ Form property pInitialForm Auto
 ObjectReference property pOriginalRef Auto
 ObjectReference property pCurrentForm Auto
 ObjectReference property pCurrentRef Auto
+ObjectReference[] property pCleanupList auto
+
+; filled in for us
 string property pState auto
+Form property pCookingPot auto
+Form property pCookingStone auto
 
 event OnActivate(ObjectReference akActionRef)
 	Form base = akActionRef.GetBaseObject()
@@ -27,28 +32,30 @@ event OnActivate(ObjectReference akActionRef)
 	; put out
 endEvent
 
-event transitionToState(int newState)
-	; the new look
-	ObjectReference newForm = formForState(newState)
+Form function formForState(string stateName)
+	; to do look up somehow
+endFunction
+
+function updateAppearance(Form newForm)
 	float scale = pOriginalRef.getScale()
 	ObjectReference newStateRef = pCurrentRef.placeAtMe(newForm)
 
 	newStateRef.SetScale(scale)
 	newStateRef.SetAngle(pCurrentRef.GetAngleX(), pCurrentRef.GetAngleY(), pCurrentRef.GetAngleZ())
 
-	float duration = getStateDuration(newState)
-	if (duration > 0)
-		RegisterForSingleUpdateGameTime(duration)
-	endif
-
 	pCurrentRef.disable()
 	newStateRef.enable()
 	pCurrentRef.delete() ; is this a thing?
 
-	pState = newState
 	pCurrentForm = newStateRef
-endEvent
+endFunction
 
+function addRelatedObject(Form related)
+	float scale = pOriginalRef.getScale()
+	ObjectReference newStateRef = pCurrentRef.placeAtMe(related)
+
+	; push onto pCleanupList
+endFunction
 
 state State_Cold
 
@@ -57,7 +64,7 @@ state State_Cold
 			return
 		endif
 		; update forms, keywords
-		self.GetNthLinkedRef(1).MoveToMyEditorLocation()
+		; self.GetNthLinkedRef(1).MoveToMyEditorLocation()
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -89,7 +96,8 @@ state State_UnlitFueled
 			return
 		endif
 
-		; start timer
+		Form newlook = formForState("State_UnlitFueled")
+		updateAppearance(newlook)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -102,11 +110,13 @@ endState
 
 state State_Kindled
 	event onBeginState()
+		RegisterForSingleUpdateGameTime(1.0)
 		if (pInitialState == "State_Kindled")
 			return
 		endif
 
-		RegisterForSingleUpdateGameTime(1.0)
+		Form newlook = formForState("State_Kindled")
+		updateAppearance(newlook)
 
 	endEvent
 
@@ -122,24 +132,15 @@ endState
 
 state State_Burning
 	event onBeginState()
+		RegisterForSingleUpdateGameTime(8.0)
+		; pCookingPot
+
 		if (pInitialState == "State_Burning")
 			return
 		endif
 
-		ObjectReference newForm = formForState(newState)
-		float scale = pOriginalRef.getScale()
-		ObjectReference newStateRef = pCurrentRef.placeAtMe(newForm)
-
-		newStateRef.SetScale(scale)
-		newStateRef.SetAngle(pCurrentRef.GetAngleX(), pCurrentRef.GetAngleY(), pCurrentRef.GetAngleZ())
-
-		RegisterForSingleUpdateGameTime(8.0)
-
-		pCurrentRef.disable()
-		newStateRef.enable()
-		pCurrentRef.delete() ; is this a thing?
-
-		pCurrentForm = newStateRef
+		Form newForm = formForState("State_Burning")
+		updateAppearance(newForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -156,11 +157,12 @@ endState
 
 state State_Roaring
 	event onBeginState()
+		RegisterForSingleUpdateGameTime(4.0)
 		if (pInitialState == "State_Roaring")
 			return
 		endif
-
-		RegisterForSingleUpdateGameTime(4.0)
+		Form newForm = formForState("State_Roaring")
+		updateAppearance(newForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -175,12 +177,13 @@ endState
 
 state State_Dying
 	event onBeginState()
+		RegisterForSingleUpdateGameTime(5.0)
 		if (pInitialState == "State_Dying")
 			return
 		endif
 
-		RegisterForSingleUpdateGameTime(5.0)
-
+		Form newForm = formForState("State_Dying")
+		updateAppearance(newForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -198,15 +201,19 @@ endState
 
 state State_Embers
 	event onBeginState()
+		RegisterForSingleUpdateGameTime(3.0)
 		if (pInitialState == "State_Embers")
 			return
 		endif
 		; update keywords & forms etc
 
-		RegisterForSingleUpdateGameTime(3.0)
+		Form newForm = formForState("State_Embers")
+		updateAppearance(newForm)
+		; apply keywords
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
+		; could re-kindle here instead but
 		; clean it out
 		UnregisterForUpdateGameTime()
 		GoToState("State_Cold")
