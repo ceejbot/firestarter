@@ -1,5 +1,6 @@
 //! Sometimes we want wrappers for the C++ functions we're calling.
 
+use crate::plugin::{FireState, TESObjectREFR};
 // a conditional use statement...
 #[cfg(not(test))]
 use crate::plugin::{lookupTranslation, notifyPlayer};
@@ -27,4 +28,17 @@ pub fn translated_key(key: &str) -> String {
 #[cfg(test)]
 pub fn translated_key(key: &str) -> String {
     format!("translation of {key}")
+}
+
+pub fn state_duration(which: u8) -> f32 {
+    let state = FireState::from(which);
+    state.duration()
+}
+
+pub fn handle_timer_fired(object: &TESObjectREFR, which: u8) {
+    todo!()
+}
+
+pub fn form_for_state(which: u8) -> &'static TESObjectREFR {
+    todo!()
 }

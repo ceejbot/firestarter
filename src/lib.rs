@@ -9,6 +9,7 @@ pub mod firestarter;
 use bridge::cosave::*;
 use bridge::logs::*;
 use bridge::strings::*;
+use bridge::wrappers::*;
 
 /// This is the cxx bridge submodule. This is where all shared data types and
 /// functions are declared, so that the cxx macros can generate code for them.
@@ -29,13 +30,24 @@ pub mod plugin {
     // Color shows most of the traits you're allowed to derive. You can't derive
     // `Default`, however. Serde's `Deserialize` and `Serialize` *are* allowed.
 
-    /// Color as rgba between 0 and 255. The default is white at full alpha.
-    #[derive(Debug, Clone, PartialEq, Eq)]
-    struct TerseColor {
-        r: u8,
-        g: u8,
-        b: u8,
-        a: u8,
+    #[derive(Debug, Clone, Copy, Hash, PartialEq)]
+    enum FireState {
+        /// Ashes and debris, no warmth.
+        Cold,
+        /// Empty of ashes and debris, no warmth.
+        UnlitEmpty,
+        /// Fresh logs, not burning. No warmth.
+        UnlitFueled,
+        /// Lit and starting to burn, small warmth.
+        Kindled,
+        /// Burning normally. Normal warmth.
+        Burning,
+        /// Burning with extra fuel. High warmth.
+        Roaring,
+        /// Fuel expiring. Moderate warmth.
+        Dying,
+        /// Fuel consumed. Low warmth.
+        Embers,
     }
 
     extern "Rust" {
@@ -79,6 +91,11 @@ pub mod plugin {
 
         /// Decode a null-terminated C string from whatever it is to utf-8.
         fn cstr_to_utf8(bytes_ffi: &CxxVector<u8>) -> String;
+
+        /// Get the duration for the specified state, in game hours.
+        fn state_duration(which: u8) -> f32;
+        fn handle_timer_fired(object: &TESObjectREFR, which: u8);
+        fn form_for_state(which: u8) -> &'static TESObjectREFR;
 
         /// From the papyrus example.
         fn string_to_int(number: String) -> i32;
@@ -125,6 +142,8 @@ pub mod plugin {
         /// Get the id for this form. This is the pattern for how C++ methods are
         /// expressed in the bridge: a parallel to how Rust functions on struct types work.
         fn GetFormID(self: &TESForm) -> u32;
+
+        type TESObjectREFR;
 
         /// The equip slot for an item.
         type BGSEquipSlot;

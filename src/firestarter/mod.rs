@@ -1,6 +1,6 @@
 //! The rust logic parts.
 
-use crate::plugin::{registerForTimeUpdateAt, TESForm};
+use crate::plugin::{registerForTimeUpdateAt, FireState, TESForm};
 
 use std::sync::Mutex;
 use std::{collections::HashMap, time};
@@ -51,26 +51,6 @@ impl Firestarter {
     }
 }
 
-#[derive(Debug, Clone, Copy, Hash, PartialEq)]
-pub enum FireState {
-    /// Ashes and debris, no warmth.
-    Cold,
-    /// Empty of ashes and debris, no warmth.
-    UnlitEmpty,
-    /// Fresh logs, not burning. No warmth.
-    UnlitFueled,
-    /// Lit and starting to burn, small warmth.
-    Kindled,
-    /// Burning normally. Normal warmth.
-    Burning,
-    /// Burning with extra fuel. High warmth.
-    Roaring,
-    /// Fuel expiring. Moderate warmth.
-    Dying,
-    /// Fuel consumed. Low warmth.
-    Embers,
-}
-
 impl FireState {
     /// Get the form id for this state's mesh.
     pub fn mesh(&self) -> u32 {
@@ -80,7 +60,7 @@ impl FireState {
     // get configured duration for this state, e.g., fire burns for 8 in-game hours
     // 1.0 f32 is 1 game hour
     pub fn duration(&self) -> f32 {
-        match &self {
+        match *self {
             FireState::Cold => 0.0,
             FireState::UnlitEmpty => 0.0,
             FireState::UnlitFueled => 0.0,
@@ -89,11 +69,12 @@ impl FireState {
             FireState::Roaring => 4.0,
             FireState::Dying => 3.0,
             FireState::Embers => 5.0,
+            _ => 0.0,
         }
     }
 
     pub fn next(&self) -> Option<FireState> {
-        match self {
+        match *self {
             FireState::Cold => None,        // requires player action  to move from
             FireState::UnlitEmpty => None,  // requires player action
             FireState::UnlitFueled => None, // requires player action
@@ -102,6 +83,23 @@ impl FireState {
             FireState::Roaring => Some(FireState::Burning),
             FireState::Dying => Some(FireState::Embers),
             FireState::Embers => Some(FireState::Cold),
+            _ => None,
+        }
+    }
+}
+
+impl From<u8> for FireState {
+    fn from(v: u8) -> Self {
+        match v {
+            0 => FireState::Cold,
+            1 => FireState::UnlitEmpty,
+            2 => FireState::UnlitFueled,
+            3 => FireState::Kindled,
+            4 => FireState::Burning,
+            5 => FireState::Roaring,
+            6 => FireState::Dying,
+            7 => FireState::Embers,
+            _ => FireState::Burning, // for the moment
         }
     }
 }
