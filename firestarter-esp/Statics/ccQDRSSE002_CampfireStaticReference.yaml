@@ -1,0 +1,10 @@
+FormKey: 000836:ccqdrsse002-firewood.esl
+EditorID: ccQDRSSE002_CampfireStaticReference
+ObjectBounds:
+  First: -57, -96, -99
+  Second: 135, 115, 178
+Model:
+  File: CreationClub\QDRSSE002\ccQDRSSE002_FXCampfireNewRocks01.nif
+  Data: 0x020000000000000000000000
+MaxAngle: 90
+Unused: 0x000000

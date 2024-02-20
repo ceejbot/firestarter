@@ -1,0 +1,20 @@
+FormKey: 000804:ccqdrsse002-firewood.esl
+EditorID: ccQDRSSE002_CampfireFurn
+Name:
+  TargetLanguage: English
+  Value: Campfire
+Model:
+  File: CreationClub\QDRSSE002\ccQDRSSE002_FXCampfireNewRocks01.nif
+  Data: 0x020000000000000000000000
+Keywords:
+- 06E9C7:Skyrim.esm
+- 00314B:Update.esm
+PNAM: 0x00000000
+Flags:
+- IgnoredBySandbox
+InteractionKeyword: 013794:Skyrim.esm
+WorkbenchData:
+  BenchType: CreateObject
+  UsesSkill: Alchemy
+Markers:
+- Enabled: True

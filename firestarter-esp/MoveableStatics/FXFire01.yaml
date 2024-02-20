@@ -1,0 +1,8 @@
+FormKey: 013B40:Skyrim.esm
+EditorID: FXFire01
+Model:
+  File: Effects\FXFire01New.nif
+  Data: 0x0200000000000000020000001800000019000000
+Flags:
+- 0x4
+LoopingSound: 03D11C:Skyrim.esm

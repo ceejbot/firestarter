@@ -1,0 +1,15 @@
+FormKey: 01F249:Skyrim.esm
+MajorRecordFlagsRaw: 134217728
+EditorID: CandleHornFloor01
+SkyrimMajorRecordFlags:
+- 0x8000000
+ObjectBounds:
+  First: -26, -26, 0
+  Second: 26, 26, 127
+Model:
+  File: Clutter\Candles\CandleHornFloor01.nif
+  Data: 0x020000000300000001000000B63F00DE64647300B71A8E22C7F7D09364647300B71A8E22634F0CEA64647300B71A8E2231000000
+MaxAngle: 90
+Unused: 0x000000
+MajorFlags:
+- NavMeshGenerationBoundingBox

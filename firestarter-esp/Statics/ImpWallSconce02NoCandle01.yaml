@@ -1,0 +1,10 @@
+FormKey: 05D6E3:Skyrim.esm
+EditorID: ImpWallSconce02NoCandle01
+ObjectBounds:
+  First: -14, -47, -39
+  Second: 0, 48, 16
+Model:
+  File: Clutter\Imperial\ImpWallSconce02NoCandle01.nif
+  Data: 0x020000000200000000000000A6951F3264647300BA10D7827F4311EF64647300BA10D782
+MaxAngle: 90
+Unused: 0x000000

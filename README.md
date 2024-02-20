@@ -71,14 +71,29 @@ Some stretch goals: Animations are not in my skillset, but maybe there's somethi
 
 Interesting generalization: candles, lanterns, fixed torches, etc.
 
+Some nifs of interest:
+
+FXFireWithEmbersHeavy	0x00033da4
+FXFireWithEmbersLight	0x00033da9
+FXFireWithEmbersLogs01  0x0004318b
+FXFireWithEmbersOut		0x0003bd2e
+
+Camping\Campfire01Off.nif
+
+PerkEntryPoint: Activate
+
+shift-E to douse/stoke?
+E to cook? idk
+
+
 ## Building the mod
 
 1. Install Rust using [rustup](https://rustup.rs).
 2. Install [Visual Studio 2022](https://visualstudio.microsoft.com) with C++ compilers.
 3. Install [CMake](https://cmake.org/download/). (The command runner does this for you on targets with homebrew.)
 4. Install `ninja` to do something or other involving project generation.
-5. Set up [vcpkg](https://github.com/microsoft/vcpkg). Set `VCPKG_ROOT` in a user environment variable pointing to the directory where you cloned the repo.
-6. Clone this template repo somewhere. `git init .` to start fresh with git.
+5. Set up [vcpkg](https://github.com/microsoft/vcpkg). Set `VCPKG_ROOT` in a user environment variable pointing to the directory where you cloned the vcpkg repo.
+6. Clone this mod repo somewhere.
 7. `git submodule update --init --recursive` to pull in the commonlib fork and its submodules.
 
 If you install the [just](https://just.systems) command runner, you can type `just full-build` to install some useful tools and compile the project. (If the project does not compile, please let me know so I can fix it.) There some recipes in the justfile that I find handy when developing. Note that I tend to keep a bash shell open for this, which you might not do.

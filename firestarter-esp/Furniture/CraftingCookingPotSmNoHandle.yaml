@@ -1,0 +1,31 @@
+FormKey: 108230:Skyrim.esm
+EditorID: CraftingCookingPotSmNoHandle
+ObjectBounds:
+  First: -32, -10, -34
+  Second: 32, 64, 64
+Name:
+  TargetLanguage: English
+  Value: Cooking Pot
+Model:
+  File: Furniture\SmallCookingPotNoHandle.nif
+  Data: 0x020000000400000000000000F52C40D664647300D6E93BAD9FA23ACC64647300D6E93BAD4D763A52646473008EAEA792BFBA986B646473008EAEA792
+Keywords:
+- 06E9C7:Skyrim.esm
+- 0A56D8:Skyrim.esm
+- 0A5CB3:Skyrim.esm
+- 0FD0E1:Skyrim.esm
+- 1010B2:Skyrim.esm
+PNAM: 0x00000000
+Flags:
+- 0x40000000
+InteractionKeyword: 013794:Skyrim.esm
+WorkbenchData:
+  BenchType: CreateObject
+  UsesSkill: Alchemy
+Markers:
+- Enabled: True
+  EntryPoints:
+    Type:
+    - Sit
+    Points:
+    - Behind

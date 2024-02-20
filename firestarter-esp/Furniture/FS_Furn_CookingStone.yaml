@@ -1,0 +1,19 @@
+FormKey: 000902:firestarter.esp
+EditorID: FS_Furn_CookingStone
+Name:
+  TargetLanguage: English
+  Value: Cooking Stone
+Model:
+  File: Clutter\CookingStone01.nif
+  Data: 0x02000000010000000100000000000000000000000000000000000000
+Keywords:
+- 06E9C7:Skyrim.esm
+- 00314B:Update.esm
+Flags:
+- IgnoredBySandbox
+InteractionKeyword: 013794:Skyrim.esm
+WorkbenchData:
+  BenchType: CreateObject
+  UsesSkill: Alchemy
+Markers:
+- Enabled: True

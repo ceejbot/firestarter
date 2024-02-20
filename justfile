@@ -118,3 +118,12 @@ install:
 [windows]
 @install:
 	echo "Run this where you have bash."
+
+# Serialize the plugin to yaml.
+serialize:
+	~/bin/spriggit serialize --InputPath installer/core/firestarter.esp --OutputPath ./firestarter-esp/ --GameRelease SkyrimSE --PackageName Spriggit.Yaml
+
+# Re-hydrate the plugin from yaml.
+hydrate:
+	cp installer/core/firestarter.esp firestarter_bak.esp
+	~/bin/spriggit deserialize --InputPath ./firestarter-esp --OutputPath ./installer/core/firestarter.esp
