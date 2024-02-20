@@ -1,18 +1,26 @@
 ScriptName Firestarter_CampfireBurning extends ObjectReference
 {comment here}
 
-;ObjectReference function formForState(int which) native
-;function handleTimerFired(Form original) native
-;float function getStateDuration(int which) native
-;function takeControl(ObjectReference objref, int initialState) native
+import PO3_SKSEFunctions
 
-string property pInitialState Auto
-Form property pInitialForm Auto
+string property pInitialState auto
+Form property pInitialForm auto
 
-ObjectReference property pOriginalRef Auto
-ObjectReference property pCurrentForm Auto
-ObjectReference property pCurrentRef Auto
-ObjectReference[] property pCleanupList auto
+ObjectReference property pOriginalRef auto
+MiscObject property Firewood01 auto
+
+; the statics/nifs/etc that make up each state
+Form property pColdForms[] auto
+Form property pUnlitEmptyForms[] auto
+Form property pUnlitFueledForms[] auto
+Form property pKindledForms[] auto
+Form property pBurningForms[] auto
+Form property pRoaringForms[] auto
+Form property pDyingForms[] auto
+Form property pEmbersForms[] auto
+
+ObjectReference[] property pCurrentRefs auto
+
 
 ; filled in for us
 string property pState auto
@@ -26,35 +34,25 @@ event OnActivate(ObjectReference akActionRef)
 
 	Debug.Notification("Taking control " + base.GetFormID() + " " + akActionRef.GetFormID())
 	GoToState(pInitialState)
-
-	; if firewood in inventory, offer stoke
-	; also offer cook
-	; put out
 endEvent
 
-Form function formForState(string stateName)
-	; to do look up somehow
-endFunction
-
-function updateAppearance(Form newForm)
+function updateAppearance(Form[] newFormList)
 	float scale = pOriginalRef.getScale()
-	ObjectReference newStateRef = pCurrentRef.placeAtMe(newForm)
 
-	newStateRef.SetScale(scale)
-	newStateRef.SetAngle(pCurrentRef.GetAngleX(), pCurrentRef.GetAngleY(), pCurrentRef.GetAngleZ())
+	; These lists must have equal length in the CK.
+	int i=0
+    while (i < newFormList.length)
+    	newForm = newFormList[i]
 
-	pCurrentRef.disable()
-	newStateRef.enable()
-	pCurrentRef.delete() ; is this a thing?
+		ObjectReference newStateRef = pCurrentRef.placeAtMe(newForm)
+		newStateRef.SetScale(scale)
+		newStateRef.SetAngle(pCurrentRef.GetAngleX(), pCurrentRef.GetAngleY(), pCurrentRef.GetAngleZ())
 
-	pCurrentForm = newStateRef
-endFunction
-
-function addRelatedObject(Form related)
-	float scale = pOriginalRef.getScale()
-	ObjectReference newStateRef = pCurrentRef.placeAtMe(related)
-
-	; push onto pCleanupList
+		pCurrentRefs[i].disable()
+		newStateRef.enable()
+		pCurrentRefs[i] = newStateRef
+        i+=1
+    endwhile
 endFunction
 
 state State_Cold
@@ -63,8 +61,7 @@ state State_Cold
 		if (pInitialState == "State_Cold")
 			return
 		endif
-		; update forms, keywords
-		; self.GetNthLinkedRef(1).MoveToMyEditorLocation()
+		updateAppearance(pColdForms)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -80,11 +77,12 @@ state State_UnlitEmpty
 		if (pInitialState == "State_UnlitEmpty")
 			return
 		endif
-
+		updateAppearance(pUnlitEmptyForms)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
 		; if player has 3 firewood, take them & fuel the fire
+		Game.GetPlayer().RemoveItem(Firewood01, 3)
 		GoToState("State_UnlitFueled")
 	endEvent
 
@@ -95,9 +93,7 @@ state State_UnlitFueled
 		if (pInitialState == "State_UnlitFueled")
 			return
 		endif
-
-		Form newlook = formForState("State_UnlitFueled")
-		updateAppearance(newlook)
+		updateAppearance(pUnlitFueledForms)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -115,9 +111,7 @@ state State_Kindled
 			return
 		endif
 
-		Form newlook = formForState("State_Kindled")
-		updateAppearance(newlook)
-
+		updateAppearance(pKindledForms)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -138,15 +132,13 @@ state State_Burning
 		if (pInitialState == "State_Burning")
 			return
 		endif
-
-		Form newForm = formForState("State_Burning")
-		updateAppearance(newForm)
+		updateAppearance(pBurningForms)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
-		; if dynamic key down, cook
-		; if not down, add fuel
-		; if we added fuel, then UnregisterForUpdateGameTime()
+		Game.GetPlayer().RemoveItem(Firewood01, 3)
+		UnregisterForUpdateGameTime()
+		GoToState("State_Roaring")
 	endEvent
 
 	Event OnUpdateGameTime()
@@ -161,8 +153,7 @@ state State_Roaring
 		if (pInitialState == "State_Roaring")
 			return
 		endif
-		Form newForm = formForState("State_Roaring")
-		updateAppearance(newForm)
+		updateAppearance(pRoaringForms)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -182,14 +173,15 @@ state State_Dying
 			return
 		endif
 
-		Form newForm = formForState("State_Dying")
-		updateAppearance(newForm)
+		updateAppearance(pDyingForms)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
 		; if dynamic key down, douse
 		; if not down, add fuel
+		Game.GetPlayer().RemoveItem(Firewood01, 3)
 		UnregisterForUpdateGameTime()
+		GoToState("State_Burning")
 	endEvent
 
 	Event OnUpdateGameTime()
@@ -207,9 +199,9 @@ state State_Embers
 		endif
 		; update keywords & forms etc
 
-		Form newForm = formForState("State_Embers")
-		updateAppearance(newForm)
-		; apply keywords
+		updateAppearance(pEmbersForms)
+		; apply keywords; might not need this if form has keywords already
+		; AddKeywordToRef()
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)

@@ -27,11 +27,8 @@ check-translations:
 # Copy the built mod files to the test mod. Can use rsync to copy many files.
 [unix]
 install:
-	#!/usr/bin/env bash
 	echo "copying to live mod for testing..."
-	mkdir -p "{{TESTMOD}}"/SKSE/plugins
 	rsync -a installer/core/ "{{TESTMOD}}"
-	cp -p build/Release/"{{DLL_BASENAME}}".{dll,pdb} "{{TESTMOD}}"/SKSE/plugins
 
 [windows]
 @sources:
