@@ -1,3 +1,0 @@
-CompileFlags:
-  Add:
-    - "-isystem'./extern/CommonLibSSE-NG/include'"
