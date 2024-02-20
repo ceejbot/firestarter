@@ -1,31 +1,28 @@
 ScriptName Firestarter_CampfireBurning extends ObjectReference
-{comment here}
+{Managing campfires, the painfully papyral way.}
 
-import PO3_SKSEFunctions
-
+; filled in for us by the CK setup
 string property pInitialState auto
 Form property pInitialForm auto
-
 ObjectReference property pOriginalRef auto
+
+; We set these in advance in the CK.
 MiscObject property Firewood01 auto
+Furniture property pCookingPot auto
+Furniture property pCookingStone auto
 
 ; the statics/nifs/etc that make up each state
-Form property pColdForms[] auto
-Form property pUnlitEmptyForms[] auto
-Form property pUnlitFueledForms[] auto
-Form property pKindledForms[] auto
-Form property pBurningForms[] auto
-Form property pRoaringForms[] auto
-Form property pDyingForms[] auto
-Form property pEmbersForms[] auto
+Static property pColdForm auto
+Static property pUnlitEmptyForm auto
+Static property pUnlitFueledForm auto
+ObjectReference property pKindledForm auto
+ObjectReference property pBurningForm auto
+ObjectReference property pRoaringForm auto
+ObjectReference property pDyingForm auto
+ObjectReference property pEmbersForm auto
 
-ObjectReference[] property pCurrentRefs auto
-
-
-; filled in for us
-string property pState auto
-Form property pCookingPot auto
-Form property pCookingStone auto
+; a local var
+ObjectReference pCurrentRef
 
 event OnActivate(ObjectReference akActionRef)
 	Form base = akActionRef.GetBaseObject()
@@ -36,23 +33,16 @@ event OnActivate(ObjectReference akActionRef)
 	GoToState(pInitialState)
 endEvent
 
-function updateAppearance(Form[] newFormList)
+function updateAppearance(Form newForm)
 	float scale = pOriginalRef.getScale()
+	ObjectReference oldRef = pCurrentRef
+	ObjectReference newStateRef = oldRef.placeAtMe(newForm)
+	newStateRef.SetScale(scale)
+	newStateRef.SetAngle(oldRef.GetAngleX(), oldRef.GetAngleY(), oldRef.GetAngleZ())
 
-	; These lists must have equal length in the CK.
-	int i=0
-    while (i < newFormList.length)
-    	newForm = newFormList[i]
-
-		ObjectReference newStateRef = pCurrentRef.placeAtMe(newForm)
-		newStateRef.SetScale(scale)
-		newStateRef.SetAngle(pCurrentRef.GetAngleX(), pCurrentRef.GetAngleY(), pCurrentRef.GetAngleZ())
-
-		pCurrentRefs[i].disable()
-		newStateRef.enable()
-		pCurrentRefs[i] = newStateRef
-        i+=1
-    endwhile
+	oldRef.disable()
+	newStateRef.enable()
+	pCurrentRef = newStateRef
 endFunction
 
 state State_Cold
@@ -61,14 +51,13 @@ state State_Cold
 		if (pInitialState == "State_Cold")
 			return
 		endif
-		updateAppearance(pColdForms)
+		updateAppearance(pColdForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
 		; clean out the ashes; go to clean empty stones
 		GoToState("State_UnlitEmpty")
 	endEvent
-
 
 endState
 
@@ -77,7 +66,7 @@ state State_UnlitEmpty
 		if (pInitialState == "State_UnlitEmpty")
 			return
 		endif
-		updateAppearance(pUnlitEmptyForms)
+		updateAppearance(pUnlitEmptyForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -93,7 +82,7 @@ state State_UnlitFueled
 		if (pInitialState == "State_UnlitFueled")
 			return
 		endif
-		updateAppearance(pUnlitFueledForms)
+		updateAppearance(pUnlitFueledForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -111,7 +100,7 @@ state State_Kindled
 			return
 		endif
 
-		updateAppearance(pKindledForms)
+		updateAppearance(pKindledForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -132,7 +121,7 @@ state State_Burning
 		if (pInitialState == "State_Burning")
 			return
 		endif
-		updateAppearance(pBurningForms)
+		updateAppearance(pBurningForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -153,7 +142,7 @@ state State_Roaring
 		if (pInitialState == "State_Roaring")
 			return
 		endif
-		updateAppearance(pRoaringForms)
+		updateAppearance(pRoaringForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -173,7 +162,7 @@ state State_Dying
 			return
 		endif
 
-		updateAppearance(pDyingForms)
+		updateAppearance(pDyingForm)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -188,7 +177,6 @@ state State_Dying
 		GoToState("State_Embers")
 	EndEvent
 
-
 endState
 
 state State_Embers
@@ -199,7 +187,7 @@ state State_Embers
 		endif
 		; update keywords & forms etc
 
-		updateAppearance(pEmbersForms)
+		updateAppearance(pEmbersForm)
 		; apply keywords; might not need this if form has keywords already
 		; AddKeywordToRef()
 	endEvent

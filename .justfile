@@ -26,7 +26,7 @@ check-translations:
 
 # Copy the built mod files to the test mod. Can use rsync to copy many files.
 [unix]
-install:
+@install:
 	echo "copying to live mod for testing..."
 	rsync -a installer/core/ "{{TESTMOD}}"
 

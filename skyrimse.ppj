@@ -8,10 +8,10 @@
     Release="false"
     Final="false">
     <Imports>
-        <Import>.\installer\core\scripts\source</Import>
         <Import>G:\MO2Skyrim\ScriptSource\Source\Scripts</Import>
         <Import>G:\MO2Skyrim\MCM SDK\Source\Scripts</Import>
         <Import>G:\MO2Skyrim\SkyUI_5.1_SDK\Scripts\Source</Import>
+        <Import>G:\MO2Skyrim\Papyrus Extender (1.6)\Source\scripts</Import>
     </Imports>
     <Folders>
         <Folder>.\installer\core\scripts\source</Folder>
