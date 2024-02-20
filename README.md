@@ -2,7 +2,7 @@
 
 Firestarter is a Skyrim mod for wilderness campers who'd like to take advantage of the many campfires and campsites in the world. Light, stoke, and then cook on any campfire you find in Skyrim.
 
-It is a CommonLibSSE-NG mod that uses [Base Object Swapper](https://www.nexusmods.com/skyrimspecialedition/mods/60805) to replace every campfire in the game with one that can be dynamically lit and extinguished. 100% Campfire compatible.
+It uses [Base Object Swapper](https://www.nexusmods.com/skyrimspecialedition/mods/60805) to replace every campfire in the game with one that can be dynamically lit and extinguished. 100% Campfire compatible.
 
 It is in the design and early implementation phase.
 
@@ -84,36 +84,6 @@ PerkEntryPoint: Activate
 
 shift-E to douse/stoke?
 E to cook? idk
-
-
-## Building the mod
-
-1. Install Rust using [rustup](https://rustup.rs).
-2. Install [Visual Studio 2022](https://visualstudio.microsoft.com) with C++ compilers.
-3. Install [CMake](https://cmake.org/download/). (The command runner does this for you on targets with homebrew.)
-4. Install `ninja` to do something or other involving project generation.
-5. Set up [vcpkg](https://github.com/microsoft/vcpkg). Set `VCPKG_ROOT` in a user environment variable pointing to the directory where you cloned the vcpkg repo.
-6. Clone this mod repo somewhere.
-7. `git submodule update --init --recursive` to pull in the commonlib fork and its submodules.
-
-If you install the [just](https://just.systems) command runner, you can type `just full-build` to install some useful tools and compile the project. (If the project does not compile, please let me know so I can fix it.) There some recipes in the justfile that I find handy when developing. Note that I tend to keep a bash shell open for this, which you might not do.
-
-To build by hand:
-
-```sh
-cmake --preset build-vs2022-windows # or just cmake
-cmake --build --preset build-vs2022-windows --config Release  # or just build
-```
-
-CMake should trigger appropriate cargo builds, but it doesn't have the full list of rust source files so I usually run cargo as part of the `build` recipe. `cargo check` is also runnable separately. The `build.rs` file instructs cargo to build the `lib.rs.h` for the plugin specifically as well as `cxx.h` for the bridging types that Cxx uses. These are rebuilt when `lib.rs` changes, which should be the only trigger you need.
-
-## Repo layout
-
-* `src/main.cpp`: Registers with SKSE, sets up logging, calls all the setup code in `src/skse`.
-* `src/lib.rs`: Defines the interface between C++ and Rust using [cxx](https://cxx.rs). Has examples of many of the common patterns you're likely to use.
-* `src/bridge/`: Some conveniences in Rust for bridging C++ and Rust, most notably unified logging.
-* `src/skse/`: SKSE responsibilities, in C++. Has examples of setting up hooks, event sinks, papyrus functions, and registering for cosave events, all of which are delegated to Rust.
-* `src/util`: Some functions exposing useful game facilities (looking up scaleform translations, printing messages to the screen) as examples of how you might do this.
 
 ## LICENSE
 
