@@ -1,0 +1,5 @@
+MutagenObjectType: PlacedObject
+FormKey: 00FC09:firestarter.esp
+Base: 006916:mcCampingLite.esp
+Placement:
+  Position: 65.22879, 38.24878, 39.918037

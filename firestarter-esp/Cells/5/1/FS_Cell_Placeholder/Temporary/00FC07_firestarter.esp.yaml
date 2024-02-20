@@ -1,0 +1,5 @@
+MutagenObjectType: PlacedObject
+FormKey: 00FC07:firestarter.esp
+Base: 03BD2E:Skyrim.esm
+Placement:
+  Position: -6.2212896, -171.78998, 42.095757
