@@ -1,28 +1,28 @@
 FormKey: 000800:firestarter.esp
 EditorID: FS_Acti_Campfire01
 VirtualMachineAdapter:
-    Scripts:
-        - Name: Firestarter_CampfireBurning
-          Properties:
-              - MutagenObjectType: ScriptIntProperty
-                Name: pInitialState
-                Data: 4
-              - MutagenObjectType: ScriptObjectProperty
-                Name: pCookingStone
-                Object: 000902:firestarter.esp
-              - MutagenObjectType: ScriptObjectProperty
-                Name: pCookingPot
-                Object: 108230:Skyrim.esm
+  Scripts:
+  - Name: Firestarter_CampfireBurning
+    Properties:
+    - MutagenObjectType: ScriptIntProperty
+      Name: pInitialState
+      Data: 4
+    - MutagenObjectType: ScriptObjectProperty
+      Name: pCookingStone
+      Object: 000902:firestarter.esp
+    - MutagenObjectType: ScriptObjectProperty
+      Name: pCookingPot
+      Object: 108230:Skyrim.esm
 ObjectBounds:
-    First: -197, -196, -191
-    Second: 167, 274, 267
+  First: -197, -196, -191
+  Second: 167, 274, 267
 Name:
-    TargetLanguage: English
-    Value: Campfire
+  TargetLanguage: English
+  Value: Campfire
 Model:
-    File: Clutter\WoodFires\Campfire01Burning.nif
-    Data: 0x020000000000000000000000
-MarkerColor: "#00CC4C33"
+  File: Clutter\WoodFires\Campfire01Burning.nif
+  Data: 0x020000000000000000000000
+MarkerColor: '#00CC4C33'
 LoopingSound: 03F204:Skyrim.esm
 Flags: []
 InteractionKeyword: 013794:Skyrim.esm

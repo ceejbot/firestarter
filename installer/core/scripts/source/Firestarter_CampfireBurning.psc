@@ -6,23 +6,22 @@ string property pInitialState auto
 Form property pInitialForm auto
 ObjectReference property pOriginalRef auto
 
+; the statics/nifs/etc that make up each state
+Static property Campfire01LandOff auto
+ObjectReference property Campfire01LandBurning auto
+ObjectReference property FXFireWithEmbersLogs01 auto
+ObjectReference property FXFireWithEmbersOut auto
+ObjectReference property FXFireWithEmbersLight auto
+ObjectReference property FXFireWithEmbersHeavy auto
+
 ; We set these in advance in the CK.
 MiscObject property Firewood01 auto
-Furniture property pCookingPot auto
-Furniture property pCookingStone auto
+Furniture property CraftingCookingPotSmNoHandle auto
+Furniture property FS_Furn_CookingStone auto
 
-; the statics/nifs/etc that make up each state
-Static property pColdForm auto
-Static property pUnlitEmptyForm auto
-Static property pUnlitFueledForm auto
-ObjectReference property pKindledForm auto
-ObjectReference property pBurningForm auto
-ObjectReference property pRoaringForm auto
-ObjectReference property pDyingForm auto
-ObjectReference property pEmbersForm auto
-
-; a local var
-ObjectReference pCurrentRef
+; local state vars
+ObjectReference mCurrentModel
+ObjectReference mCurrentEffect
 
 event OnActivate(ObjectReference akActionRef)
 	Form base = akActionRef.GetBaseObject()
@@ -33,16 +32,22 @@ event OnActivate(ObjectReference akActionRef)
 	GoToState(pInitialState)
 endEvent
 
-function updateAppearance(Form newForm)
+function updateAppearance(Form model, ObjectReference effect)
 	float scale = pOriginalRef.getScale()
-	ObjectReference oldRef = pCurrentRef
-	ObjectReference newStateRef = oldRef.placeAtMe(newForm)
-	newStateRef.SetScale(scale)
-	newStateRef.SetAngle(oldRef.GetAngleX(), oldRef.GetAngleY(), oldRef.GetAngleZ())
+	ObjectReference oldModel = mCurrentModel
+	ObjectReference oldEffect = mCurrentEffect
+	ObjectReference newModel = oldModel.placeAtMe(model)
+	ObjectReference newEffect = oldModel.placeAtMe(effect)
+	newModel.SetScale(scale)
+	newEffect.SetScale(scale)
+	newModel.SetAngle(oldModel.GetAngleX(), oldModel.GetAngleY(), oldModel.GetAngleZ())
 
-	oldRef.disable()
-	newStateRef.enable()
-	pCurrentRef = newStateRef
+	oldModel.disable()
+	newModel.enable()
+	oldEffect.disable()
+	newEffect.enable()
+	mCurrentModel = newModel
+	mCurrentEffect = newEffect
 endFunction
 
 state State_Cold
@@ -51,7 +56,7 @@ state State_Cold
 		if (pInitialState == "State_Cold")
 			return
 		endif
-		updateAppearance(pColdForm)
+		updateAppearance(Campfire01LandOff, FXFireWithEmbersOut)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -66,7 +71,7 @@ state State_UnlitEmpty
 		if (pInitialState == "State_UnlitEmpty")
 			return
 		endif
-		updateAppearance(pUnlitEmptyForm)
+		updateAppearance(Campfire01LandOff, FXFireWithEmbersOut)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -82,7 +87,7 @@ state State_UnlitFueled
 		if (pInitialState == "State_UnlitFueled")
 			return
 		endif
-		updateAppearance(pUnlitFueledForm)
+		updateAppearance(Campfire01LandOff, FXFireWithEmbersOut)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -99,8 +104,7 @@ state State_Kindled
 		if (pInitialState == "State_Kindled")
 			return
 		endif
-
-		updateAppearance(pKindledForm)
+		updateAppearance(Campfire01LandOff, FXFireWithEmbersLight)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -121,7 +125,7 @@ state State_Burning
 		if (pInitialState == "State_Burning")
 			return
 		endif
-		updateAppearance(pBurningForm)
+		updateAppearance(Campfire01LandBurning, FXFireWithEmbersLight)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -142,7 +146,7 @@ state State_Roaring
 		if (pInitialState == "State_Roaring")
 			return
 		endif
-		updateAppearance(pRoaringForm)
+		updateAppearance(Campfire01LandBurning, FXFireWithEmbersHeavy)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -161,8 +165,7 @@ state State_Dying
 		if (pInitialState == "State_Dying")
 			return
 		endif
-
-		updateAppearance(pDyingForm)
+		updateAppearance(Campfire01LandBurning, FXFireWithEmbersLogs01)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -185,9 +188,7 @@ state State_Embers
 		if (pInitialState == "State_Embers")
 			return
 		endif
-		; update keywords & forms etc
-
-		updateAppearance(pEmbersForm)
+		updateAppearance(Campfire01LandOff, FXFireWithEmbersLogs01)
 		; apply keywords; might not need this if form has keywords already
 		; AddKeywordToRef()
 	endEvent
