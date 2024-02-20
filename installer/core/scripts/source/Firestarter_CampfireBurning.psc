@@ -76,8 +76,11 @@ state State_UnlitEmpty
 
 	event OnActivate(ObjectReference akActionRef)
 		; if player has 3 firewood, take them & fuel the fire
-		Game.GetPlayer().RemoveItem(Firewood01, 3)
-		GoToState("State_UnlitFueled")
+		int count = Game.GetPlayer().GetItemCount(Firewood01)
+		if count > 3
+			Game.GetPlayer().RemoveItem(Firewood01, 3)
+			GoToState("State_UnlitFueled")
+		endif
 	endEvent
 
 endState
