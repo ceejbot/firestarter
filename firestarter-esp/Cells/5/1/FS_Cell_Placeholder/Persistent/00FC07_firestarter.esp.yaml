@@ -1,5 +1,8 @@
 MutagenObjectType: PlacedObject
 FormKey: 00FC07:firestarter.esp
+MajorRecordFlagsRaw: 1024
+SkyrimMajorRecordFlags:
+- 0x400
 Base: 03BD2E:Skyrim.esm
 Placement:
   Position: -6.2212896, -171.78998, 42.095757

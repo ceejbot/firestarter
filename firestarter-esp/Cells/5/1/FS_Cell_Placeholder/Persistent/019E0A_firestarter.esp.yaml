@@ -1,0 +1,9 @@
+MutagenObjectType: PlacedObject
+FormKey: 019E0A:firestarter.esp
+MajorRecordFlagsRaw: 1024
+VersionControl: 12371
+SkyrimMajorRecordFlags:
+- 0x400
+Base: 035F49:Skyrim.esm
+Placement:
+  Position: 279.32816, -100.95787, -213.81665

@@ -1,14 +1,15 @@
 SpriggitSource:
   PackageName: Spriggit.Yaml.Skyrim
-  Version: 0.16.0
+  Version: 0.17.0
 ModKey: firestarter.esp
 GameRelease: SkyrimSE
 ModHeader:
   Flags:
   - Light
   Stats:
-    NumRecords: 88
-    NextFormID: 85258
+    Version: 1.7
+    NumRecords: 90
+    NextFormID: 105995
   Author: DEFAULT
   MasterReferences:
   - Master: Skyrim.esm

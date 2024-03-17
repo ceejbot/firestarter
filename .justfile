@@ -4,7 +4,7 @@ set shell := ["bash", "-uc"]
 # The location of a target development mod.
 TESTMOD := "/mnt/g/MO2Skyrim/firestarter-dev"
 PLUGIN_FILE := "firestarter.esp"
-SPRIGGIT := "~/bin/spriggit"
+SPRIGGIT := "~/bin/spriggit/Spriggit.CLI"
 
 # List recipes
 _help:

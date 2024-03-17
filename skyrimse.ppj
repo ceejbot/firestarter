@@ -2,18 +2,18 @@
 <PapyrusProject xmlns="PapyrusProject.xsd"
     Flags="TESV_Papyrus_Flags.flg"
     Game="sse"
-    Output="installer\core\scripts"
+    Output="data\scripts"
     Optimize="true"
     Anonymize="true"
     Release="false"
     Final="false">
     <Imports>
-        <Import>G:\MO2Skyrim\ScriptSource\Source\Scripts</Import>
-        <Import>G:\MO2Skyrim\MCM SDK\Source\Scripts</Import>
-        <Import>G:\MO2Skyrim\SkyUI_5.1_SDK\Scripts\Source</Import>
-        <Import>G:\MO2Skyrim\Papyrus Extender (1.6)\Source\scripts</Import>
+        <Import>F:\source\ceejbot\PapyrusLibraries\ScriptSource\Source\Scripts</Import>
+        <Import>F:\source\ceejbot\PapyrusLibraries\MCM SDK\Source\Scripts</Import>
+        <Import>F:\source\ceejbot\PapyrusLibraries\SkyUI_5.1_SDK\Scripts\Source</Import>
+        <Import>F:\source\ceejbot\PapyrusLibraries\Papyrus Extender (1.6)\Source\scripts</Import>
     </Imports>
     <Folders>
-        <Folder>.\installer\core\scripts\source</Folder>
+        <Folder>.\data\scripts\source</Folder>
     </Folders>
 </PapyrusProject>

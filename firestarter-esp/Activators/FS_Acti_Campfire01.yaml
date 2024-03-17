@@ -4,15 +4,36 @@ VirtualMachineAdapter:
   Scripts:
   - Name: Firestarter_CampfireBurning
     Properties:
+    - MutagenObjectType: ScriptStringProperty
+      Name: pInitialState
+      Data: State_Burning
     - MutagenObjectType: ScriptObjectProperty
-      Name: pCookingStone
+      Name: Firewood01
+      Object: 06F993:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Campfire01LandOff
+      Object: 035F4C:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: CraftingCookingPotSmNoHandle
+      Object: 108230:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: FS_Furn_CookingStone
       Object: 000902:firestarter.esp
     - MutagenObjectType: ScriptObjectProperty
-      Name: pCookingPot
-      Object: 108230:Skyrim.esm
-    - MutagenObjectType: ScriptIntProperty
-      Name: pInitialState
-      Data: 4
+      Name: FXfireWithEmbersHeavy
+      Object: 00FC04:firestarter.esp
+    - MutagenObjectType: ScriptObjectProperty
+      Name: FXfireWithEmbersLight
+      Object: 00FC05:firestarter.esp
+    - MutagenObjectType: ScriptObjectProperty
+      Name: FXfireWithEmbersOut
+      Object: 00FC07:firestarter.esp
+    - MutagenObjectType: ScriptObjectProperty
+      Name: FXfireWithEmbersLogs01
+      Object: 00FC06:firestarter.esp
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Campfire01LandBurning
+      Object: 019E0A:firestarter.esp
 ObjectBounds:
   First: -197, -196, -191
   Second: 167, 274, 267
