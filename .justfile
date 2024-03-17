@@ -12,23 +12,28 @@ _help:
 
 # Serialize the plugin to yaml.
 serialize:
-	{{SPRIGGIT}} serialize --InputPath installer/core/firestarter.esp --OutputPath ./firestarter-esp/ --GameRelease SkyrimSE --PackageName Spriggit.Yaml
+	{{SPRIGGIT}} serialize --InputPath data/firestarter.esp --OutputPath ./firestarter-esp/ --GameRelease SkyrimSE --PackageName Spriggit.Yaml
 
 # Re-hydrate the plugin from yaml.
 hydrate:
-	cp installer/core/firestarter.esp firestarter_bak.esp
-	{{SPRIGGIT}} deserialize --InputPath ./firestarter-esp --OutputPath ./installer/core/firestarter.esp
+	cp data/firestarter.esp firestarter_bak.esp
+	{{SPRIGGIT}} deserialize --InputPath ./firestarter-esp --OutputPath ./data/firestarter.esp
 
 # check that all $ strings in config have matching translation strings
 [unix]
 check-translations:
-	mcm-meta-helper --moddir installer/core check all
+	mcm-meta-helper --moddir data check all
 
 # Copy the built mod files to the test mod. Can use rsync to copy many files.
 [unix]
 @install:
 	echo "copying to live mod for testing..."
-	rsync -a installer/core/ "{{TESTMOD}}"
+	rsync -a data/ "{{TESTMOD}}"
+
+[unix]
+@backup:
+	echo "Copying edits back from live mod..."
+	rsync -a "{{TESTMOD}}/" data
 
 [windows]
 @sources:
@@ -36,4 +41,8 @@ check-translations:
 
 [windows]
 @install:
+	echo "Run this where you have bash."
+
+[windows]
+@backup:
 	echo "Run this where you have bash."

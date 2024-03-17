@@ -7,12 +7,21 @@ Form property pInitialForm auto
 ObjectReference property pOriginalRef auto
 
 ; the statics/nifs/etc that make up each state
-Static property Campfire01LandOff auto
-ObjectReference property Campfire01LandBurning auto
+Static property Campfire01LandOff auto ; needs to be renamed to generic
+ObjectReference property Campfire01LandBurning auto ; needs to be renamed generically
 ObjectReference property FXFireWithEmbersLogs01 auto
 ObjectReference property FXFireWithEmbersOut auto
 ObjectReference property FXFireWithEmbersLight auto
 ObjectReference property FXFireWithEmbersHeavy auto
+
+; Campfire + log states
+ObjectReference property FS_State_Clean auto
+ObjectReference property FS_State_Fueled auto
+ObjectReference property FS_State_Kindled auto
+ObjectReference property FS_State_Burning auto
+ObjectReference property FS_State_Roaring auto
+ObjectReference property FS_State_Dying auto
+ObjectReference property FS_State_Ashes auto
 
 ; We set these in advance in the CK.
 MiscObject property Firewood01 auto
@@ -22,6 +31,11 @@ Furniture property FS_Furn_CookingStone auto
 ; local state vars
 ObjectReference mCurrentModel
 ObjectReference mCurrentEffect
+
+float kBurningHours = 1.0
+float kRoaringHours = 1.0
+float kDyingHours = 1.0
+int kFirewoodCost = 3
 
 event OnActivate(ObjectReference akActionRef)
 	Form base = akActionRef.GetBaseObject()
@@ -76,10 +90,11 @@ state State_UnlitEmpty
 
 	event OnActivate(ObjectReference akActionRef)
 		; if player has 3 firewood, take them & fuel the fire
-		int count = Game.GetPlayer().GetItemCount(Firewood01)
-		if count > 3
-			Game.GetPlayer().RemoveItem(Firewood01, 3)
+		if Game.GetPlayer().GetItemCount(Firewood01) > kFirewoodCost
+			Game.GetPlayer().RemoveItem(Firewood01, kFirewoodCost)
 			GoToState("State_UnlitFueled")
+		else
+			; play failure sound
 		endif
 	endEvent
 
@@ -115,6 +130,7 @@ state State_Kindled
 	endEvent
 
 	Event OnUpdateGameTime()
+		debug.Notification("Going to state burning")
 		GoToState("State_Burning")
 	EndEvent
 
@@ -122,7 +138,7 @@ endState
 
 state State_Burning
 	event onBeginState()
-		RegisterForSingleUpdateGameTime(8.0)
+		RegisterForSingleUpdateGameTime(kBurningHours)
 		; pCookingPot
 
 		if (pInitialState == "State_Burning")
@@ -132,12 +148,17 @@ state State_Burning
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
-		Game.GetPlayer().RemoveItem(Firewood01, 3)
-		UnregisterForUpdateGameTime()
-		GoToState("State_Roaring")
+		if Game.GetPlayer().GetItemCount(Firewood01) > kFirewoodCost
+			Game.GetPlayer().RemoveItem(Firewood01, kFirewoodCost)
+			UnregisterForUpdateGameTime()
+			GoToState("State_Roaring")
+		else
+			; play failure sound
+		endif
 	endEvent
 
 	Event OnUpdateGameTime()
+		debug.Notification("Going to state dying")
 		GoToState("State_Dying")
 	EndEvent
 
@@ -145,7 +166,7 @@ endState
 
 state State_Roaring
 	event onBeginState()
-		RegisterForSingleUpdateGameTime(4.0)
+		RegisterForSingleUpdateGameTime(kRoaringHours)
 		if (pInitialState == "State_Roaring")
 			return
 		endif
@@ -157,6 +178,7 @@ state State_Roaring
 	endEvent
 
 	Event OnUpdateGameTime()
+		debug.Notification("Going to state burning")
 		GoToState("State_Burning")
 	EndEvent
 
@@ -164,22 +186,27 @@ endState
 
 state State_Dying
 	event onBeginState()
-		RegisterForSingleUpdateGameTime(5.0)
+		RegisterForSingleUpdateGameTime(kDyingHours)
 		if (pInitialState == "State_Dying")
 			return
 		endif
-		updateAppearance(Campfire01LandBurning, FXFireWithEmbersLogs01)
+		updateAppearance(Campfire01LandOff, FXFireWithEmbersOut)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
 		; if dynamic key down, douse
 		; if not down, add fuel
-		Game.GetPlayer().RemoveItem(Firewood01, 3)
-		UnregisterForUpdateGameTime()
-		GoToState("State_Burning")
+		if Game.GetPlayer().GetItemCount(Firewood01) > kFirewoodCost
+			Game.GetPlayer().RemoveItem(Firewood01, 3)
+			UnregisterForUpdateGameTime()
+			GoToState("State_Burning")
+		else
+			; play failure sound
+		endif
 	endEvent
 
 	Event OnUpdateGameTime()
+		debug.Notification("Going to state embers")
 		GoToState("State_Embers")
 	EndEvent
 
@@ -187,11 +214,11 @@ endState
 
 state State_Embers
 	event onBeginState()
-		RegisterForSingleUpdateGameTime(3.0)
+		RegisterForSingleUpdateGameTime(kDyingHours)
 		if (pInitialState == "State_Embers")
 			return
 		endif
-		updateAppearance(Campfire01LandOff, FXFireWithEmbersLogs01)
+		updateAppearance(Campfire01LandOff, FXFireWithEmbersOut)
 		; apply keywords; might not need this if form has keywords already
 		; AddKeywordToRef()
 	endEvent
@@ -204,6 +231,7 @@ state State_Embers
 	endEvent
 
 	Event OnUpdateGameTime()
+		debug.Notification("Going to state cold")
 		GoToState("State_Cold")
 	EndEvent
 
