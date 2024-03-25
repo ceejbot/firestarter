@@ -57,15 +57,6 @@ function updateAppearance(ObjectReference model, ObjectReference effect = None)
 	; newModel.Enable()
 	mCurrentModel = newModel
 
-	if (effect != None)
-		ObjectReference newEffect = mCurrentEffect.placeAtMe(effect)
-		newEffect.Enable(true)
-		mCurrentEffect.Disable(true)
-		mCurrentEffect = newEffect
-	Else
-		mCurrentEffect.Disable(true)
-	endIf
-
 	Debug.Notification("Finished updating appearance to " + model.GetFormID())
 endFunction
 
