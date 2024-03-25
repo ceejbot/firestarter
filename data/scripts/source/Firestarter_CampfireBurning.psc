@@ -15,6 +15,15 @@ ObjectReference property pFS_State_Roaring auto
 ObjectReference property pFS_State_Dying auto
 ObjectReference property pFS_State_Ashes auto
 
+; Sounds
+Sound property pKindleSound auto
+Sound property pFizzleSound auto
+
+; Fire & glow effects.
+ObjectReference property FXFireWithEmbersLight auto
+ObjectReference property FXFireWithEmbersHeavy auto
+ObjectReference property FXFireWithEmbersOut auto
+
 ; We set these in advance in the CK.
 MiscObject property Firewood01 auto
 Furniture property CraftingCookingPotSmNoHandle auto
@@ -31,23 +40,33 @@ int kFirewoodCost = 3
 
 event OnActivate(ObjectReference akActionRef)
 	Form base = akActionRef.GetBaseObject()
+	mCurrentModel = akActionRef
 	pOriginalRef = akActionRef
 	pInitialForm = base ; needed?
 
-	Debug.Notification("Taking control " + base.GetFormID() + " " + akActionRef.GetFormID())
+	Debug.Notification("Taking control; initial state " + pInitialState)
 	GoToState(pInitialState)
 endEvent
 
-function updateAppearance(ObjectReference model)
-	float scale = pOriginalRef.getScale()
-	ObjectReference oldModel = mCurrentModel
-	ObjectReference newModel = oldModel.placeAtMe(model)
-	newModel.SetScale(scale)
-	newModel.SetAngle(oldModel.GetAngleX(), oldModel.GetAngleY(), oldModel.GetAngleZ())
-
-	oldModel.disable()
-	newModel.enable()
+function updateAppearance(ObjectReference model, ObjectReference effect = None)
+	ObjectReference newModel = self.placeAtMe(model)
+	newModel.SetScale(self.getScale())
+	newModel.SetAngle(self.GetAngleX(), self.GetAngleY(), self.GetAngleZ())
+	newModel.SetPosition(self.GetPositionX(), self.GetPositionY(), self.GetPositionZ())
+	mCurrentModel.Disable()
+	; newModel.Enable()
 	mCurrentModel = newModel
+
+	if (effect != None)
+		ObjectReference newEffect = mCurrentEffect.placeAtMe(effect)
+		newEffect.Enable(true)
+		mCurrentEffect.Disable(true)
+		mCurrentEffect = newEffect
+	Else
+		mCurrentEffect.Disable(true)
+	endIf
+
+	Debug.Notification("Finished updating appearance to " + model.GetFormID())
 endFunction
 
 state State_Cold
@@ -56,7 +75,8 @@ state State_Cold
 		if (pInitialState == "State_Cold")
 			return
 		endif
-		updateAppearance(pFS_State_Ashes)
+		pFizzleSound.Play(Game.GetPlayer())
+		updateAppearance(pFS_State_Ashes, None)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -97,6 +117,7 @@ state State_UnlitFueled
 	event OnActivate(ObjectReference akActionRef)
 		; check requirements
 		; light fire
+		Debug.Notification("kindling fire")
 		GoToState("State_Kindled")
 	endEvent
 
@@ -104,14 +125,16 @@ endState
 
 state State_Kindled
 	event onBeginState()
+		pKindleSound.Play(Game.GetPlayer())
 		RegisterForSingleUpdateGameTime(1.0)
 		if (pInitialState == "State_Kindled")
 			return
 		endif
-		updateAppearance(pFS_State_Kindled)
+		updateAppearance(pFS_State_Kindled, FXFireWithEmbersLight)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
+		Debug.Notification("kindled state has no activate")
 		; might consider stoking to move it faster to next state?
 	endEvent
 
@@ -130,10 +153,12 @@ state State_Burning
 		if (pInitialState == "State_Burning")
 			return
 		endif
-		updateAppearance(pFS_State_Burning)
+		updateAppearance(pFS_State_Burning, FXFireWithEmbersLight)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
+		Debug.Notification("adding more logs to fire")
+
 		if Game.GetPlayer().GetItemCount(Firewood01) > kFirewoodCost
 			Game.GetPlayer().RemoveItem(Firewood01, kFirewoodCost)
 			UnregisterForUpdateGameTime()
@@ -156,7 +181,7 @@ state State_Roaring
 		if (pInitialState == "State_Roaring")
 			return
 		endif
-		updateAppearance(pFS_State_Roaring)
+		updateAppearance(pFS_State_Roaring, FXFireWithEmbersHeavy)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -164,7 +189,7 @@ state State_Roaring
 	endEvent
 
 	Event OnUpdateGameTime()
-		debug.Notification("Going to state burning")
+		debug.Notification("Roaring subsiding to state burning")
 		GoToState("State_Burning")
 	EndEvent
 
@@ -176,7 +201,7 @@ state State_Dying
 		if (pInitialState == "State_Dying")
 			return
 		endif
-		updateAppearance(pFS_State_Dying)
+		updateAppearance(pFS_State_Dying, FXFireWithEmbersLight)
 	endEvent
 
 	event OnActivate(ObjectReference akActionRef)
@@ -192,7 +217,7 @@ state State_Dying
 	endEvent
 
 	Event OnUpdateGameTime()
-		debug.Notification("Going to state embers")
+		debug.Notification("Going to state dead")
 		GoToState("State_Cold")
 	EndEvent
 
