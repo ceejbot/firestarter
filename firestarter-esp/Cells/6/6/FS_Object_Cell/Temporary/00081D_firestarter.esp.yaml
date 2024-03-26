@@ -1,0 +1,6 @@
+MutagenObjectType: PlacedObject
+FormKey: 00081D:firestarter.esp
+VersionControl: 12409
+Base: 000817:firestarter.esp
+Placement:
+  Position: -23.960842, -142.10495, 133.0793

@@ -1,0 +1,5 @@
+MutagenObjectType: PlacedObject
+FormKey: 000819:firestarter.esp
+VersionControl: 12409
+Base: 000815:firestarter.esp
+Placement: {}

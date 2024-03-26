@@ -1,0 +1,46 @@
+FormKey: 000818:firestarter.esp
+EditorID: FS_Acti_Campfire01_Kindled
+VirtualMachineAdapter:
+  Scripts:
+  - Name: Firestarter_Activator
+    Properties:
+    - MutagenObjectType: ScriptFloatProperty
+      Name: pTimerLen
+      Data: 1
+    - MutagenObjectType: ScriptObjectProperty
+      Name: Firewood01
+      Object: 06F993:Skyrim.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: pTimerState
+      Object: 000800:firestarter.esp
+    - MutagenObjectType: ScriptObjectProperty
+      Name: pInitializationSound
+      Object: 013F0D:Dawnguard.esm
+    - MutagenObjectType: ScriptObjectProperty
+      Name: pFailureSound
+      Object: 06D1C6:Skyrim.esm
+    - MutagenObjectType: ScriptBoolProperty
+      Name: pActivationAdvancesState
+    - MutagenObjectType: ScriptBoolProperty
+      Name: pHasTimer
+      Data: True
+    - MutagenObjectType: ScriptBoolProperty
+      Name: pActivationCostsFirewood
+ObjectBounds:
+  First: -66, -62, -13
+  Second: 60, 60, 44
+Name:
+  TargetLanguage: English
+  Value: Kindled Campfire
+Model:
+  File: clutter\woodfires\FS_Forest_Kindled.nif
+  Data: 0x020000000000000000000000
+  AlternateTextures:
+  - Name: mx_rocks
+    NewTexture: 000AE1:Skyrim.esm
+    Index: 9
+MarkerColor: '#00CC4C33'
+LoopingSound: 03F3E2:Skyrim.esm
+Flags:
+- IgnoredBySandbox
+InteractionKeyword: 099306:Skyrim.esm

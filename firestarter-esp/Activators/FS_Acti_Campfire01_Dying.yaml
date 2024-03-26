@@ -1,46 +1,46 @@
-FormKey: 000801:firestarter.esp
-EditorID: FS_Acti_Campfire01Land
+FormKey: 000814:firestarter.esp
+EditorID: FS_Acti_Campfire01_Dying
 VirtualMachineAdapter:
   Scripts:
   - Name: Firestarter_Activator
     Properties:
     - MutagenObjectType: ScriptObjectProperty
       Name: pTimerState
-      Object: 000814:firestarter.esp
+      Object: 000815:firestarter.esp
     - MutagenObjectType: ScriptObjectProperty
       Name: pActivationState
-      Object: 000813:firestarter.esp
+      Object: 000800:firestarter.esp
     - MutagenObjectType: ScriptBoolProperty
       Name: pActivationAdvancesState
     - MutagenObjectType: ScriptObjectProperty
-      Name: pFailureSound
-      Object: 06D1C6:Skyrim.esm
+      Name: Firewood01
+      Object: 06F993:Skyrim.esm
     - MutagenObjectType: ScriptFloatProperty
       Name: pTimerLen
       Data: 1
     - MutagenObjectType: ScriptObjectProperty
       Name: pInitializationSound
-    - MutagenObjectType: ScriptObjectProperty
-      Name: Firewood01
-      Object: 06F993:Skyrim.esm
-    - MutagenObjectType: ScriptBoolProperty
-      Name: pHasTimer
-      Data: True
     - MutagenObjectType: ScriptBoolProperty
       Name: pActivationCostsFirewood
       Data: True
+    - MutagenObjectType: ScriptBoolProperty
+      Name: pHasTimer
+      Data: True
+    - MutagenObjectType: ScriptObjectProperty
+      Name: pFailureSound
+      Object: 06D1C6:Skyrim.esm
 ObjectBounds:
-  First: -197, -196, -191
-  Second: 167, 274, 267
+  First: -66, -62, -385
+  Second: 405, 60, 142
 Name:
   TargetLanguage: English
-  Value: Campfire
+  Value: Dying Campfire
 Model:
-  File: clutter\woodfires\FS_Forest_Burning.nif
+  File: clutter\woodfires\FS_Forest_Dying.nif
   Data: 0x020000000000000000000000
   AlternateTextures:
   - Name: mx_rocks
-    NewTexture: 1044CC:Skyrim.esm
+    NewTexture: 000AE1:Skyrim.esm
     Index: 9
 MarkerColor: '#00CC4C33'
 LoopingSound: 03F204:Skyrim.esm

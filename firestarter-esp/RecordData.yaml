@@ -8,8 +8,8 @@ ModHeader:
   - Light
   Stats:
     Version: 1.7
-    NumRecords: 90
-    NextFormID: 105995
+    NumRecords: 36
+    NextFormID: 4261423136
   Author: DEFAULT
   MasterReferences:
   - Master: Skyrim.esm
@@ -18,14 +18,10 @@ ModHeader:
     FileSize: 0
   - Master: Dawnguard.esm
     FileSize: 0
-  - Master: HearthFires.esm
-    FileSize: 0
   - Master: Dragonborn.esm
     FileSize: 0
   - Master: ccQDRSSE001-SurvivalMode.esl
     FileSize: 0
   - Master: ccqdrsse002-firewood.esl
-    FileSize: 0
-  - Master: mcCampingLite.esp
     FileSize: 0
   INTV: 1

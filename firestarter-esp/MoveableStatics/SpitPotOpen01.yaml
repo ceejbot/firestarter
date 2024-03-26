@@ -1,8 +1,0 @@
-FormKey: 054173:Skyrim.esm
-EditorID: SpitPotOpen01
-ObjectBounds:
-  First: -15, -16, 56
-  Second: 16, 16, 107
-Model:
-  File: Clutter\WoodFires\SpitPotOpen01.nif
-  Data: 0x020000000200000000000000F52C40D664647300D6E93BAD9FA23ACC64647300D6E93BAD

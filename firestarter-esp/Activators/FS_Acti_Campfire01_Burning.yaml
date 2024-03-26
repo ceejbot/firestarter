@@ -1,5 +1,5 @@
-FormKey: 000801:firestarter.esp
-EditorID: FS_Acti_Campfire01Land
+FormKey: 000800:firestarter.esp
+EditorID: FS_Acti_Campfire01_Burning
 VirtualMachineAdapter:
   Scripts:
   - Name: Firestarter_Activator
@@ -30,8 +30,8 @@ VirtualMachineAdapter:
       Name: pActivationCostsFirewood
       Data: True
 ObjectBounds:
-  First: -197, -196, -191
-  Second: 167, 274, 267
+  First: -66, -62, -385
+  Second: 405, 60, 142
 Name:
   TargetLanguage: English
   Value: Campfire
@@ -40,7 +40,7 @@ Model:
   Data: 0x020000000000000000000000
   AlternateTextures:
   - Name: mx_rocks
-    NewTexture: 1044CC:Skyrim.esm
+    NewTexture: 000AE1:Skyrim.esm
     Index: 9
 MarkerColor: '#00CC4C33'
 LoopingSound: 03F204:Skyrim.esm
