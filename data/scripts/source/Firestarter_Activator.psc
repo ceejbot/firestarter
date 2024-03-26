@@ -23,7 +23,7 @@ bool bIsManaged = false
 function initializeFireTimers()
     bIsManaged = true
     if pHasTimer
-        RegisterForSingleUpdateGameTime(0.25)
+        RegisterForSingleUpdateGameTime(0.124)
     endif
 endFunction
 
@@ -61,12 +61,12 @@ Event OnUpdateGameTime()
 EndEvent
 
 function replaceSelf(Activator next)
-	self.Disable()
-    Utility.Wait(0.1)
     Firestarter_Activator nextState = self.placeAtMe(next) as Firestarter_Activator
 	nextState.SetScale(self.getScale())
 	nextState.SetAngle(self.GetAngleX(), self.GetAngleY(), self.GetAngleZ())
 	nextState.SetPosition(self.GetPositionX(), self.GetPositionY(), self.GetPositionZ())
+	self.Disable(true)
+    Utility.Wait(0.1)
 	nextState.Enable()
     Utility.Wait(0.1)
     nextState.initializeFireTimers()
