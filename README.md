@@ -4,7 +4,19 @@ Firestarter is a Skyrim mod for wilderness campers who'd like to take advantage 
 
 It uses [Base Object Swapper](https://www.nexusmods.com/skyrimspecialedition/mods/60805) to replace every campfire in the game with one that can be dynamically lit and extinguished. 100% Campfire compatible.
 
-It is in the design and early implementation phase.
+It is in the implementation phase.
+
+## TODO
+
+- [ ] particles, flame effects, glow effects, and smoke: tune to lifecycle
+- [ ] texturing for the unburned log meshes
+- [ ] Dynamic Activation Key perk
+- [ ] hook up DAK to trigger cooking on burning fires (or the reverse?)
+- [ ] maybe work with Dynamic Portable Cooking mod?
+- [ ] work with Campfire mod somehow
+- [ ] play animations for actions if we have them?
+- [ ] translation files
+
 
 ## Design notes
 

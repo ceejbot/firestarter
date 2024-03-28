@@ -4,6 +4,7 @@ ScriptName Firestarter_Activator extends ObjectReference
 ; Game data we need to use for all of them.
 Sound property pFailureSound auto
 MiscObject property Firewood01 auto
+GlobalVariable property FS_Trigger_Animation auto
 
 ; Activator-specific data, set in the CK.
 bool property pActivationAdvancesState auto
@@ -18,6 +19,7 @@ float property pTimerLen auto ; this is in hours; must be converted to days
 Activator property pTimerState auto
 
 bool bIsManaged = false
+bool bNeedsDelete = true
 
 function initializeFireTimers()
     bIsManaged = true
@@ -30,6 +32,7 @@ endFunction
 ; first instantiated in the world.
 event OnActivate(ObjectReference akActionRef)
     if !bIsManaged
+        bNeedsDelete = false
         self.initializeFireTimers()
     endif
 
@@ -67,4 +70,10 @@ function replaceSelf(Activator next)
 	self.Disable(true)
     Utility.Wait(0.1)
     nextState.initializeFireTimers()
+
+    if bNeedsDelete
+        Utility.Wait(0.1)
+        self.Delete()
+    endIf
+
 endFunction
