@@ -3,7 +3,6 @@ ScriptName Firestarter_Activator extends ObjectReference
 
 ; Game data we need to use for all of them.
 Sound property pFailureSound auto
-Sound property pInitializationSound auto
 MiscObject property Firewood01 auto
 
 ; Activator-specific data, set in the CK.
@@ -66,8 +65,6 @@ function replaceSelf(Activator next)
 	nextState.SetAngle(self.GetAngleX(), self.GetAngleY(), self.GetAngleZ())
 	nextState.SetPosition(self.GetPositionX(), self.GetPositionY(), self.GetPositionZ())
 	self.Disable(true)
-    Utility.Wait(0.1)
-	nextState.Enable()
     Utility.Wait(0.1)
     nextState.initializeFireTimers()
 endFunction
